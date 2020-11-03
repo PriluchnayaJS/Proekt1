@@ -46,11 +46,13 @@ window.addEventListener('DOMContentLoaded', function() {
                 timerHours.textContent = timer.hours;
                 timerMinutes.textContent = timer.minutes;
                 timerSeconds.textContent = timer.seconds;
-                setTimeout(updateClock, 1000);
+                //setTimeout(updateClock, 1000);
+
             } else {
                 timerHours.textContent = '00';
                 timerMinutes.textContent = '00';
                 timerSeconds.textContent = '00';
+
             };
 
 
@@ -60,6 +62,6 @@ window.addEventListener('DOMContentLoaded', function() {
 
 
     }
-    countTimer('08 november 2020');
-    //setInterval(countTimer, 1000, '08 november 2020');
+    // countTimer('08 november 2020');
+    setInterval(countTimer, 1000, '08 november 2020');
 });
