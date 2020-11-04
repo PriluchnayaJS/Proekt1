@@ -13,16 +13,20 @@ window.addEventListener('DOMContentLoaded', function() {
                 seconds = Math.floor(timeRemaining % 60),
                 minutes = Math.floor((timeRemaining / 60) % 60),
                 hours = Math.floor(timeRemaining / 60 / 60);
-            if (hours < 10) {
-                hours = '0' + hours;
-            };
-            if (minutes < 10) {
-                minutes = '0' + minutes;
-            };
-            if (seconds < 10) {
-                seconds = '0' + seconds;
-            };
 
+            // if (hours < 10) {
+            //     hours = '0' + hours;
+            // };
+            // if (minutes < 10) {
+            //     minutes = '0' + minutes;
+            // };
+            // if (seconds < 10) {
+            //     seconds = '0' + seconds;
+            // };
+
+            hours < 10 ? hours = '0' + hours : hours;
+            minutes < 10 ? minutes = '0' + minutes : minutes;
+            seconds < 10 ? seconds = '0' + seconds : seconds;
 
             return {
                 timeRemaining,
@@ -42,19 +46,24 @@ window.addEventListener('DOMContentLoaded', function() {
             // timerMinutes.textContent = timer.minutes;
             // timerSeconds.textContent = timer.seconds;
 
-            if (timer.timeRemaining > 0) {
-                timerHours.textContent = timer.hours;
-                timerMinutes.textContent = timer.minutes;
-                timerSeconds.textContent = timer.seconds;
+            // if (timer.timeRemaining > 0) {
+            //     timerHours.textContent = timer.hours;
+            //     timerMinutes.textContent = timer.minutes;
+            //     timerSeconds.textContent = timer.seconds;
+            //     //setTimeout(updateClock, 1000);
+
+            // } else {
+            //     timerHours.textContent = '00';
+            //     timerMinutes.textContent = '00';
+            //     timerSeconds.textContent = '00';
+
+            // };
+
+            timer.timeRemaining > 0 ?
+                (timerHours.textContent = timer.hours, timerMinutes.textContent = timer.minutes, timerSeconds.textContent = timer.seconds)
                 //setTimeout(updateClock, 1000);
-
-            } else {
-                timerHours.textContent = '00';
-                timerMinutes.textContent = '00';
-                timerSeconds.textContent = '00';
-
-            };
-
+                :
+                (timerHours.textContent = '00', timerMinutes.textContent = '00', timerSeconds.textContent = '00');
 
         }
 
