@@ -80,25 +80,49 @@ window.addEventListener('DOMContentLoaded', function() {
             clsBtn = document.querySelector('.close-btn'),
             menuItems = menu.querySelectorAll('ul>li');
 
-        btnMenu.addEventListener('click', () => {
-            if (!menu.style.transform || menu.style.transform === `translate(-100%)`) {
-                menu.style.transform = `translate(0)`;
-            } else {
-                menu.style.transform = `translate(-100%)`;
-            };
-            console.log(menu.style.transform); //false
-
-        });
-        clsBtn.addEventListener('click', () => {
-            menu.style.transform = `translate(-100%)`; //закрытие меню
-        });
-        for (let i = 0; i < menuItems.length; i++) {
-            menuItems[i].addEventListener('click', () => {
-                menu.style.transform = `translate(-100%)`;
-            });
+        //повторяющиеся команды работы с меню
+        const handlerMenu = () => {
+            // if (!menu.style.transform || menu.style.transform === `translate(-100%)`) {
+            //     menu.style.transform = `translate(0)`;
+            // } else {
+            //     menu.style.transform = `translate(-100%)`;
+            // };
+            menu.classList.toggle('active-menu');
         }
-    }
+
+        btnMenu.addEventListener('click', handlerMenu);
+        clsBtn.addEventListener('click', handlerMenu);
+        menuItems.forEach((elem) => elem.addEventListener('click', handlerMenu));
+        // for (let i = 0; i < menuItems.length; i++) {
+        //     menuItems[i].addEventListener('click', handlerMenu);
+        // };
+        // menuItems.forEach((elem) => {
+        //     elem.addEventListener('click', handlerMenu);
+        // });
+
+
+    };
     toggleMenu();
+
+    //popup окно
+    const togglePopup = () => {
+        const popup = document.querySelector('.popup'),
+            popupBtn = document.querySelectorAll('.popup-btn'),
+            popupClose = document.querySelector('.popup-close');
+
+        popupBtn.forEach((elem) => {
+            elem.addEventListener('click', () => {
+                popup.style.display = 'block';
+            });
+        });
+        popupClose.addEventListener('click', () => {
+            popup.style.display = 'none';
+        });
+    };
+
+    togglePopup();
+
+
 
 
 
