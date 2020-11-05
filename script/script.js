@@ -122,10 +122,10 @@ window.addEventListener('DOMContentLoaded', function() {
                     popupContent.style.left = '0px';
 
                     function frame() {
-                        if ((pos === document.documentElement.clientWidth / 2 - popupContent.clientWidth / 2) || window.screen.width <= 768) {
+                        if ((pos >= (parseInt(document.documentElement.clientWidth) / 2) - (parseInt(popupContent.clientWidth) / 2)) || window.screen.width <= 768) {
                             clearInterval(id);
                         } else {
-                            pos++;
+                            pos += 4;
                             popupContent.style.left = pos + 'px';
                         };
                     };
