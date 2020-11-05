@@ -107,8 +107,8 @@ window.addEventListener('DOMContentLoaded', function() {
     //popup окно
     const togglePopup = () => {
         const popup = document.querySelector('.popup'),
-            popupBtn = document.querySelectorAll('.popup-btn'),
-            popupClose = document.querySelector('.popup-close');
+            popupBtn = document.querySelectorAll('.popup-btn');
+        //popupClose = document.querySelector('.popup-close'); не нужна
 
         popupBtn.forEach((elem) => {
             elem.addEventListener('click', () => {
@@ -132,17 +132,28 @@ window.addEventListener('DOMContentLoaded', function() {
                 };
 
                 movePopup();
-
-
             });
         });
-        popupClose.addEventListener('click', () => {
-            popup.style.display = 'none';
 
+        // popupClose.addEventListener('click', () => {
+        //     popup.style.display = 'none';
+        // });
 
+        popup.addEventListener('click', (event) => {
+            let target = event.target;
 
+            if (target.classList.contains('popup-close')) {
+                popup.style.display = 'none';
+            } else {
+                target = target.closest('.popup-content');
+                //console.log(target);
+                if (!target) {
+                    popup.style.display = 'none';
+                };
+            };
 
         });
+
     };
 
     togglePopup();
@@ -167,27 +178,24 @@ window.addEventListener('DOMContentLoaded', function() {
 
         tabHeader.addEventListener('click', (event) => {
             let target = event.target;
-            //console.log(target);
-            while (target !== tabHeader) {
-                // console.log(target);
+            // console.log(target);
 
-                if (target.classList.contains('service-header-tab')) {
-                    //console.log(target);
-                    tab.forEach((item, i) => {
-                        if (item === target) {
-                            // console.log(tabContent[i]);
-                            toggleTabContent(i);
-                        };
-                    });
+            target = target.closest('.service-header-tab'); //поднимается выше до родителя и ищет элемент
+            // console.log(target);
 
-                    return;
-                };
-
-                target = target.parentNode;
+            if (target) {
+                //console.log(target);
+                tab.forEach((item, i) => {
+                    if (item === target) {
+                        // console.log(tabContent[i]);
+                        toggleTabContent(i);
+                    };
+                });
 
             };
 
         });
+
     };
 
     tabs();
