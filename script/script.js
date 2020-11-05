@@ -113,10 +113,35 @@ window.addEventListener('DOMContentLoaded', function() {
         popupBtn.forEach((elem) => {
             elem.addEventListener('click', () => {
                 popup.style.display = 'block';
+
+                function movePopup() {
+                    const popupContent = document.querySelector('.popup-content');
+
+                    let pos = 0;
+                    let id = setInterval(frame, 5);
+                    popupContent.style.left = '0px';
+
+                    function frame() {
+                        if ((pos === document.documentElement.clientWidth / 2 - popupContent.clientWidth / 2) || window.screen.width <= 768) {
+                            clearInterval(id);
+                        } else {
+                            pos++;
+                            popupContent.style.left = pos + 'px';
+                        };
+                    };
+                };
+
+                movePopup();
+
+
             });
         });
         popupClose.addEventListener('click', () => {
             popup.style.display = 'none';
+
+
+
+
         });
     };
 
