@@ -75,10 +75,10 @@ window.addEventListener('DOMContentLoaded', function() {
     //работа с меню
     const toggleMenu = () => {
 
-        const btnMenu = document.querySelector('.menu'),
-            menu = document.querySelector('menu'), //тег меню
-            clsBtn = document.querySelector('.close-btn'),
-            menuItems = menu.querySelectorAll('ul>li');
+        const btnMenu = document.querySelector('.menu'), //кнопка меню
+            menu = document.querySelector('menu'); //тег меню - окно меню
+        // clsBtn = document.querySelector('.close-btn'),
+        // menuItems = menu.querySelectorAll('ul>li'); //пункты меню
 
         //повторяющиеся команды работы с меню
         const handlerMenu = () => {
@@ -88,11 +88,21 @@ window.addEventListener('DOMContentLoaded', function() {
             //     menu.style.transform = `translate(-100%)`;
             // };
             menu.classList.toggle('active-menu');
-        }
+        };
+        //делегирование
+        menu.addEventListener('click', (event) => {
+            let target = event.target;
+            if (target.tagName === 'A') {
+                handlerMenu(event);
+            };
+        });
 
         btnMenu.addEventListener('click', handlerMenu);
-        clsBtn.addEventListener('click', handlerMenu);
-        menuItems.forEach((elem) => elem.addEventListener('click', handlerMenu));
+
+        /* clsBtn.addEventListener('click', handlerMenu);
+        menuItems.forEach((elem) => elem.addEventListener('click', handlerMenu));*/
+
+
         // for (let i = 0; i < menuItems.length; i++) {
         //     menuItems[i].addEventListener('click', handlerMenu);
         // };
