@@ -222,7 +222,8 @@ window.addEventListener('DOMContentLoaded', function() {
             interval; //для откл автоматического переключения слайдов при работе с мышью
         //добавление слайда
         //формирование dot от количества slide
-        function getListContent() {
+        // function getListContent() {
+        const getListContent = () => {
 
             let dot = [];
 
