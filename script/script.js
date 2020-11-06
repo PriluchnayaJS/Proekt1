@@ -213,13 +213,33 @@ window.addEventListener('DOMContentLoaded', function() {
     //слайдер
     const slider = () => {
         const slide = document.querySelectorAll('.portfolio-item'),
-            btn = document.querySelectorAll('.portfolio-btn'),
-            dot = document.querySelectorAll('.dot'),
-            slider = document.querySelector('.portfolio-content');
+            //btn = document.querySelectorAll('.portfolio-btn'),
+            //dot = document.querySelectorAll('.dot'),
+            slider = document.querySelector('.portfolio-content'),
+            ulDots = document.querySelector('.portfolio-dots');
 
         let currentSlide = 0,
             interval; //для откл автоматического переключения слайдов при работе с мышью
         //добавление слайда
+        //формирование dot от количества slide
+        function getListContent() {
+
+            let dot = [];
+
+            for (let i = 0; i <= slide.length - 1; i++) {
+                let li = document.createElement('li');
+                li.classList.add('dot');
+                dot.push(li);
+                dot[0].classList.add('dot-active');
+            };
+
+            return dot;
+        };
+
+        ulDots.append(...getListContent());
+
+        const dot = document.querySelectorAll('.dot'); //определение переменной dot после создания dot
+
         const prevSlide = (elem, index, strClass) => {
             elem[index].classList.remove(strClass);
         };
@@ -227,7 +247,6 @@ window.addEventListener('DOMContentLoaded', function() {
         const nextSlide = (elem, index, strClass) => {
             elem[index].classList.add(strClass);
         };
-
 
         const autoPlaySlide = () => {
             // slide[currentSlide].classList.remove('portfolio-item-active');
