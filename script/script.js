@@ -327,4 +327,47 @@ window.addEventListener('DOMContentLoaded', function() {
         startSlide(1500);
     };
     slider();
+
+    //input, регулярные выражения, делегирование
+
+    const inputReg = () => {
+
+        const classBlock = document.querySelector('.calc-block');
+
+        classBlock.addEventListener('click', (event) => {
+            let target = event.target;
+
+            target.addEventListener('input', () => {
+
+                target.value = target.value.replace(/\D/g, '');
+
+            });
+
+        });
+
+    };
+    inputReg();
+
+    //наша команда - dataset
+
+    const classRow = () => {
+        const commandPhoto = document.querySelectorAll('.command__photo');
+        console.log(commandPhoto);
+        commandPhoto.forEach((img) => {
+            let src = img.getAttribute('src');
+            img.addEventListener('mouseenter', (e) => {
+
+                e.target.src = e.target.dataset.img;
+
+            });
+            img.addEventListener('mouseleave', (e) => {
+
+                e.target.src = src;
+            });
+
+        });
+
+    };
+    classRow();
+
 });
