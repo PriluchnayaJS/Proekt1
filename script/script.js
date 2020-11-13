@@ -35,7 +35,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 seconds
             };
 
-        }
+        };
 
         function updateClock() {
 
@@ -65,12 +65,12 @@ window.addEventListener('DOMContentLoaded', function() {
                 :
                 (timerHours.textContent = '00', timerMinutes.textContent = '00', timerSeconds.textContent = '00');
 
-        }
+        };
 
         updateClock();
-    }
+    };
     // countTimer('08 november 2020');
-    setInterval(countTimer, 1000, '08 november 2020');
+    setInterval(countTimer, 1000, '17 november 2020');
 
     //работа с меню
     const toggleMenu = () => {
@@ -428,4 +428,60 @@ window.addEventListener('DOMContentLoaded', function() {
 
     };
     calc(100);
+
+    //send-ajax-form
+    const sendForm = () => {
+        const errorMessage = 'Что-то пошло не так...',
+            loadMessage = 'Загрузка...',
+            successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
+        const form = document.getElementById('form1');
+        const statusMessage = document.createElement('div');
+        statusMessage.style.cssText = 'font-size: 2rem;';
+        //statusMessage.textContent = 'Тут будет сообщение!'
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            form.appendChild(statusMessage);
+
+            const request = new XMLHttpRequest();
+
+            request.addEventListener('readystatechange', () => {
+                statusMessage.textContent = loadMessage;
+
+                if (request.readyState !== 4) {
+                    return;
+                };
+
+                if (request.status === 200) {
+                    statusMessage.textContent = successMessage;
+                } else {
+                    statusMessage.textContent = errorMessage;
+                    // console.error(request.status);
+                };
+
+            });
+
+            request.open('POST', './server.php');
+            //request.setRequestHeader('Content-Type', 'multipart/form-data');
+            request.setRequestHeader('Content-Type', 'application/json');
+            const formData = new FormData(form);
+            let body = {};
+            // for (let val of formData.entries()) {
+            //     // console.log(val);
+            //     body[val[0]] = val[1];
+            // };
+            formData.forEach((val, key) => {
+                body[key] = val;
+            });
+            //console.log(body);
+
+            //request.send(formData);
+            request.send(JSON.stringify(body));
+
+
+        });
+
+    };
+    sendForm();
+
 });
