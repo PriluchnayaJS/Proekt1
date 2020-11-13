@@ -442,28 +442,8 @@ window.addEventListener('DOMContentLoaded', function() {
         form.addEventListener('submit', (event) => {
             event.preventDefault();
             form.appendChild(statusMessage);
-
-            const request = new XMLHttpRequest();
-
-            request.addEventListener('readystatechange', () => {
-                statusMessage.textContent = loadMessage;
-
-                if (request.readyState !== 4) {
-                    return;
-                };
-
-                if (request.status === 200) {
-                    statusMessage.textContent = successMessage;
-                } else {
-                    statusMessage.textContent = errorMessage;
-                    // console.error(request.status);
-                };
-
-            });
-
-            request.open('POST', './server.php');
-            //request.setRequestHeader('Content-Type', 'multipart/form-data');
-            request.setRequestHeader('Content-Type', 'application/json');
+            statusMessage.textContent = loadMessage;
+            //получение данных с формы в обработчике событий
             const formData = new FormData(form);
             let body = {};
             // for (let val of formData.entries()) {
@@ -474,12 +454,50 @@ window.addEventListener('DOMContentLoaded', function() {
                 body[key] = val;
             });
             //console.log(body);
+            //передача данных при вызове функции
+            postData(body,
+                () => {
+                    statusMessage.textContent = successMessage;
+                },
+                (error) => {
+                    statusMessage.textContent = errorMessage;
+                    console.error(error);
+                });
+        });
+
+
+        //запрос на сервер в отдельной функции postData()
+        //outputData -callback функция - данные, которые вернулись, обрабатываются
+        const postData = (body, outputData, errorData) => {
+
+            const request = new XMLHttpRequest();
+
+            request.addEventListener('readystatechange', () => {
+                // statusMessage.textContent = loadMessage;
+
+                if (request.readyState !== 4) {
+                    return;
+                };
+
+                if (request.status === 200) {
+                    outputData();
+                    // statusMessage.textContent = successMessage;
+                } else {
+                    errorData(request.status);
+                    // statusMessage.textContent = errorMessage;
+                    // console.error(request.status);
+                };
+
+            });
+
+            request.open('POST', './server.php');
+            //request.setRequestHeader('Content-Type', 'multipart/form-data');
+            request.setRequestHeader('Content-Type', 'application/json');
 
             //request.send(formData);
             request.send(JSON.stringify(body));
 
-
-        });
+        };
 
     };
     sendForm();
