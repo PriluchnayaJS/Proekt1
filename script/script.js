@@ -453,11 +453,13 @@ window.addEventListener('DOMContentLoaded', function() {
             formData.forEach((val, key) => {
                 body[key] = val;
             });
+
             //console.log(body);
             //передача данных при вызове функции
             postData(body,
                 () => {
                     statusMessage.textContent = successMessage;
+                    form.reset();
                 },
                 (error) => {
                     statusMessage.textContent = errorMessage;
@@ -532,6 +534,7 @@ window.addEventListener('DOMContentLoaded', function() {
             postData(body,
                 () => {
                     statusMessage.textContent = successMessage;
+                    form2.reset();
                 },
                 (error) => {
                     statusMessage.textContent = errorMessage;
@@ -587,6 +590,7 @@ window.addEventListener('DOMContentLoaded', function() {
         statusMessage.style.cssText = 'font-size: 1em; color: #fff;';
 
         form3.addEventListener('submit', (event) => {
+
             event.preventDefault();
             form3.appendChild(statusMessage);
             statusMessage.textContent = loadMessage;
@@ -597,17 +601,20 @@ window.addEventListener('DOMContentLoaded', function() {
             formData.forEach((val, key) => {
                 body[key] = val;
             });
+
             //console.log(body);
             //передача данных при вызове функции
             postData(body,
                 () => {
                     statusMessage.textContent = successMessage;
+                    form3.reset();
                 },
                 (error) => {
                     statusMessage.textContent = errorMessage;
                     console.error(error);
                 });
         });
+
 
         //запрос на сервер в отдельной функции postData()
         //outputData - callback функция - данные, которые вернулись, обрабатываются
@@ -639,6 +646,19 @@ window.addEventListener('DOMContentLoaded', function() {
     };
     sendForm3();
 
+    //validator phone
+    const formPhone = () => {
 
+        const phones = document.querySelectorAll('.form-phone');
+        //console.log(phones);
+        phones.forEach((e) => {
+            e.addEventListener('input', () => {
+                e.setAttribute('pattern', '[+][0-9]{11}');
+            });
+
+        });
+
+    };
+    formPhone();
 
 });
