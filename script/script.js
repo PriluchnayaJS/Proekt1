@@ -647,18 +647,51 @@ window.addEventListener('DOMContentLoaded', function() {
     sendForm3();
 
     //validator phone
-    const formPhone = () => {
+    const formValid = () => {
+
+
 
         const phones = document.querySelectorAll('.form-phone');
         //console.log(phones);
+
         phones.forEach((e) => {
             e.addEventListener('input', () => {
                 e.setAttribute('pattern', '[+][0-9]{11}');
+                if (!e.value) {
+                    e.setAttribute('placeholder', '+7XXXXXXXXXX');
+                } else {
+                    e.setAttribute('placeholder', 'Номер телефона');
+                };
             });
 
         });
 
+        const names = document.querySelectorAll('.form-name');
+        //console.log(names);
+
+        names.forEach((e) => {
+            e.addEventListener('input', () => {
+
+                e.setAttribute('pattern', '^[А-Яа-яЁё ]+$');
+                if (!e.value) {
+                    e.setAttribute('placeholder', 'Ваше имя (RU/space)');
+                } else {
+                    e.setAttribute('placeholder', 'Ваше имя');
+                };
+            });
+
+        });
+        const messForm3 = document.querySelector('.mess');
+
+        messForm3.addEventListener('input', () => {
+            messForm3.setAttribute('pattern', '^[А-Яа-яЁё ]+$');
+            if (!messForm3.value) {
+                messForm3.setAttribute('placeholder', 'Ваше сообщение (кириллица и пробелы)');
+            } else {
+                messForm3.setAttribute('placeholder', 'Ваше сообщение');
+            };
+        })
     };
-    formPhone();
+    formValid();
 
 });
