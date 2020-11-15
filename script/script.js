@@ -429,44 +429,60 @@ window.addEventListener('DOMContentLoaded', function() {
     };
     calc(100);
 
-    //send-ajax-form
+
+    //sends-ajax-forms!
     const sendForm = () => {
-        const errorMessage = 'Что-то пошло не так...',
-            loadMessage = 'Загрузка...',
-            successMessage = 'Спасибо! Мы скоро с Вами свяжемся!';
-        const form = document.getElementById('form1');
-        const statusMessage = document.createElement('div');
-        statusMessage.style.cssText = 'font-size: 2rem;';
+
+        const form = document.querySelectorAll('form');
+
+        // console.log(form);
+
+        // const form = document.getElementById('form1');
+
         //statusMessage.textContent = 'Тут будет сообщение!'
 
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
-            form.appendChild(statusMessage);
-            statusMessage.textContent = loadMessage;
-            //получение данных с формы в обработчике событий
-            const formData = new FormData(form);
-            let body = {};
-            // for (let val of formData.entries()) {
-            //     // console.log(val);
-            //     body[val[0]] = val[1];
-            // };
-            formData.forEach((val, key) => {
-                body[key] = val;
+        form.forEach((elem) => {
+            const errorMessage = 'Что-то пошло не так...',
+                loadMessage = 'Загрузка...',
+                successMessage = 'Спасибо! Мы скоро с Вами свяжемся!';
+
+            elem.addEventListener('submit', (event) => {
+                const statusMessage = document.createElement('div');
+                statusMessage.style.cssText = 'font-size: 2rem; color: #fff;';
+
+
+                event.preventDefault();
+                elem.appendChild(statusMessage);
+                statusMessage.textContent = loadMessage;
+                //получение данных с формы в обработчике событий
+                const formData = new FormData(elem);
+                let body = {};
+                // for (let val of formData.entries()) {
+                //     // console.log(val);
+                //     body[val[0]] = val[1];
+                // };
+                formData.forEach((val, key) => {
+                    body[key] = val;
+                });
+
+
+
+                //console.log(body);
+                //передача данных при вызове функции
+                postData(body,
+                    () => {
+                        elem.reset();
+                        statusMessage.textContent = successMessage;
+                        setTimeout(() => statusMessage.remove(), 7000);
+                    },
+                    (error) => {
+                        statusMessage.textContent = errorMessage;
+                        console.error(error);
+                    });
             });
 
-            //console.log(body);
-            //передача данных при вызове функции
-            postData(body,
-                () => {
-                    statusMessage.textContent = successMessage;
-                    form.reset();
-                },
-                (error) => {
-                    statusMessage.textContent = errorMessage;
-                    console.error(error);
-                });
-        });
 
+        });
 
         //запрос на сервер в отдельной функции postData()
         //outputData -callback функция - данные, которые вернулись, обрабатываются
@@ -502,153 +518,230 @@ window.addEventListener('DOMContentLoaded', function() {
         };
 
     };
+
     sendForm();
 
-    //send-ajax-form2
 
-    const sendForm2 = () => {
-        const errorMessage = 'Что-то пошло не так...',
-            loadMessage = 'Загрузка...',
-            successMessage = 'Спасибо! С Вами свяжется специалист!';
-        const form2 = document.getElementById('form2');
-        const statusMessage = document.createElement('div');
-        statusMessage.style.cssText = 'font-size: 2rem;';
-        //statusMessage.textContent = 'Тут будет сообщение!';
+    //send-ajax-form
+    // const sendForm = () => {
+    //     const errorMessage = 'Что-то пошло не так...',
+    //         loadMessage = 'Загрузка...',
+    //         successMessage = 'Спасибо! Мы скоро с Вами свяжемся!';
+    //     const form = document.getElementById('form1');
+    //     const statusMessage = document.createElement('div');
+    //     statusMessage.style.cssText = 'font-size: 2rem;';
+    //     //statusMessage.textContent = 'Тут будет сообщение!'
 
-        form2.addEventListener('submit', (event) => {
-            event.preventDefault();
-            form2.appendChild(statusMessage);
-            statusMessage.textContent = loadMessage;
-            //получение данных с формы в обработчике событий
-            const formData = new FormData(form2);
-            let body = {};
-            // for (let val of formData.entries()) {
-            //     // console.log(val);
-            //     body[val[0]] = val[1];
-            // };
-            formData.forEach((val, key) => {
-                body[key] = val;
-            });
-            //console.log(body);
-            //передача данных при вызове функции
-            postData(body,
-                () => {
-                    statusMessage.textContent = successMessage;
-                    form2.reset();
-                },
-                (error) => {
-                    statusMessage.textContent = errorMessage;
-                    console.error(error);
-                });
-        });
+    //     form.addEventListener('submit', (event) => {
+    //         event.preventDefault();
+    //         form.appendChild(statusMessage);
+    //         statusMessage.textContent = loadMessage;
+    //         //получение данных с формы в обработчике событий
+    //         const formData = new FormData(form);
+    //         let body = {};
+    //         // for (let val of formData.entries()) {
+    //         //     // console.log(val);
+    //         //     body[val[0]] = val[1];
+    //         // };
+    //         formData.forEach((val, key) => {
+    //             body[key] = val;
+    //         });
 
-
-        //запрос на сервер в отдельной функции postData()
-        //outputData -callback функция - данные, которые вернулись, обрабатываются
-        const postData = (body, outputData, errorData) => {
-
-            const request = new XMLHttpRequest();
-
-            request.addEventListener('readystatechange', () => {
-                // statusMessage.textContent = loadMessage;
-
-                if (request.readyState !== 4) {
-                    return;
-                };
-
-                if (request.status === 200) {
-                    outputData();
-                    // statusMessage.textContent = successMessage;
-                } else {
-                    errorData(request.status);
-                    // statusMessage.textContent = errorMessage;
-                    // console.error(request.status);
-                };
-
-            });
-
-            request.open('POST', './server.php');
-            //request.setRequestHeader('Content-Type', 'multipart/form-data');
-            request.setRequestHeader('Content-Type', 'application/json');
-
-            //request.send(formData);
-            request.send(JSON.stringify(body));
-
-        };
-
-    };
-    sendForm2();
-
-    //send-ajax-form3
-
-    const sendForm3 = () => {
-        const errorMessage = 'Что-то пошло не так...',
-            loadMessage = 'Загрузка...',
-            successMessage = 'Спасибо, с Вами свяжутся!';
-        const form3 = document.getElementById('form3');
-        const statusMessage = document.createElement('div');
-        statusMessage.style.cssText = 'font-size: 1em; color: #fff;';
-
-        form3.addEventListener('submit', (event) => {
-
-            event.preventDefault();
-            form3.appendChild(statusMessage);
-            statusMessage.textContent = loadMessage;
-            //получение данных с формы в обработчике событий
-            const formData = new FormData(form3);
-            let body = {};
-
-            formData.forEach((val, key) => {
-                body[key] = val;
-            });
-
-            //console.log(body);
-            //передача данных при вызове функции
-            postData(body,
-                () => {
-                    statusMessage.textContent = successMessage;
-                    form3.reset();
-                },
-                (error) => {
-                    statusMessage.textContent = errorMessage;
-                    console.error(error);
-                });
-        });
+    //         //console.log(body);
+    //         //передача данных при вызове функции
+    //         postData(body,
+    //             () => {
+    //                 statusMessage.textContent = successMessage;
+    //                 form.reset();
+    //             },
+    //             (error) => {
+    //                 statusMessage.textContent = errorMessage;
+    //                 console.error(error);
+    //             });
+    //     });
 
 
-        //запрос на сервер в отдельной функции postData()
-        //outputData - callback функция - данные, которые вернулись, обрабатываются
-        const postData = (body, outputData, errorData) => {
+    //     //запрос на сервер в отдельной функции postData()
+    //     //outputData -callback функция - данные, которые вернулись, обрабатываются
+    //     const postData = (body, outputData, errorData) => {
 
-            const request = new XMLHttpRequest();
+    //         const request = new XMLHttpRequest();
 
-            request.addEventListener('readystatechange', () => {
-                // statusMessage.textContent = loadMessage;
+    //         request.addEventListener('readystatechange', () => {
+    //             // statusMessage.textContent = loadMessage;
 
-                if (request.readyState !== 4) {
-                    return;
-                };
+    //             if (request.readyState !== 4) {
+    //                 return;
+    //             };
 
-                if (request.status === 200) {
-                    outputData();
-                } else {
-                    errorData(request.status);
-                };
+    //             if (request.status === 200) {
+    //                 outputData();
+    //                 // statusMessage.textContent = successMessage;
+    //             } else {
+    //                 errorData(request.status);
+    //                 // statusMessage.textContent = errorMessage;
+    //                 // console.error(request.status);
+    //             };
 
-            });
+    //         });
 
-            request.open('POST', './server.php');
-            request.setRequestHeader('Content-Type', 'application/json');
-            request.send(JSON.stringify(body));
+    //         request.open('POST', './server.php');
+    //         //request.setRequestHeader('Content-Type', 'multipart/form-data');
+    //         request.setRequestHeader('Content-Type', 'application/json');
 
-        };
+    //         //request.send(formData);
+    //         request.send(JSON.stringify(body));
 
-    };
-    sendForm3();
+    //     };
 
-    //validator phone
+    // };
+    // sendForm();
+
+    // //send-ajax-form2
+
+    // const sendForm2 = () => {
+    //     const errorMessage = 'Что-то пошло не так...',
+    //         loadMessage = 'Загрузка...',
+    //         successMessage = 'Спасибо! С Вами свяжется специалист!';
+    //     const form2 = document.getElementById('form2');
+    //     const statusMessage = document.createElement('div');
+    //     statusMessage.style.cssText = 'font-size: 2rem;';
+    //     //statusMessage.textContent = 'Тут будет сообщение!';
+
+    //     form2.addEventListener('submit', (event) => {
+    //         event.preventDefault();
+    //         form2.appendChild(statusMessage);
+    //         statusMessage.textContent = loadMessage;
+    //         //получение данных с формы в обработчике событий
+    //         const formData = new FormData(form2);
+    //         let body = {};
+    //         // for (let val of formData.entries()) {
+    //         //     // console.log(val);
+    //         //     body[val[0]] = val[1];
+    //         // };
+    //         formData.forEach((val, key) => {
+    //             body[key] = val;
+    //         });
+    //         //console.log(body);
+    //         //передача данных при вызове функции
+    //         postData(body,
+    //             () => {
+    //                 statusMessage.textContent = successMessage;
+    //                 form2.reset();
+    //             },
+    //             (error) => {
+    //                 statusMessage.textContent = errorMessage;
+    //                 console.error(error);
+    //             });
+    //     });
+
+
+    //     //запрос на сервер в отдельной функции postData()
+    //     //outputData -callback функция - данные, которые вернулись, обрабатываются
+    //     const postData = (body, outputData, errorData) => {
+
+    //         const request = new XMLHttpRequest();
+
+    //         request.addEventListener('readystatechange', () => {
+    //             // statusMessage.textContent = loadMessage;
+
+    //             if (request.readyState !== 4) {
+    //                 return;
+    //             };
+
+    //             if (request.status === 200) {
+    //                 outputData();
+    //                 // statusMessage.textContent = successMessage;
+    //             } else {
+    //                 errorData(request.status);
+    //                 // statusMessage.textContent = errorMessage;
+    //                 // console.error(request.status);
+    //             };
+
+    //         });
+
+    //         request.open('POST', './server.php');
+    //         //request.setRequestHeader('Content-Type', 'multipart/form-data');
+    //         request.setRequestHeader('Content-Type', 'application/json');
+
+    //         //request.send(formData);
+    //         request.send(JSON.stringify(body));
+
+    //     };
+
+    // };
+    // sendForm2();
+
+    // //send-ajax-form3
+
+    // const sendForm3 = () => {
+    //     const errorMessage = 'Что-то пошло не так...',
+    //         loadMessage = 'Загрузка...',
+    //         successMessage = 'Спасибо, с Вами свяжутся!';
+    //     const form3 = document.getElementById('form3');
+    //     const statusMessage = document.createElement('div');
+    //     statusMessage.style.cssText = 'font-size: 1em; color: #fff;';
+
+    //     form3.addEventListener('submit', (event) => {
+
+    //         event.preventDefault();
+    //         form3.appendChild(statusMessage);
+    //         statusMessage.textContent = loadMessage;
+    //         //получение данных с формы в обработчике событий
+    //         const formData = new FormData(form3);
+    //         let body = {};
+
+    //         formData.forEach((val, key) => {
+    //             body[key] = val;
+    //         });
+
+    //         //console.log(body);
+    //         //передача данных при вызове функции
+    //         postData(body,
+    //             () => {
+    //                 statusMessage.textContent = successMessage;
+    //                 form3.reset();
+    //             },
+    //             (error) => {
+    //                 statusMessage.textContent = errorMessage;
+    //                 console.error(error);
+    //             });
+    //     });
+
+
+    //     //запрос на сервер в отдельной функции postData()
+    //     //outputData - callback функция - данные, которые вернулись, обрабатываются
+    //     const postData = (body, outputData, errorData) => {
+
+    //         const request = new XMLHttpRequest();
+
+    //         request.addEventListener('readystatechange', () => {
+    //             // statusMessage.textContent = loadMessage;
+
+    //             if (request.readyState !== 4) {
+    //                 return;
+    //             };
+
+    //             if (request.status === 200) {
+    //                 outputData();
+    //             } else {
+    //                 errorData(request.status);
+    //             };
+
+    //         });
+
+    //         request.open('POST', './server.php');
+    //         request.setRequestHeader('Content-Type', 'application/json');
+    //         request.send(JSON.stringify(body));
+
+    //     };
+
+    // };
+    // sendForm3();
+
+
     const formValid = () => {
-
+        //validator phone, name, message
 
 
         const phones = document.querySelectorAll('.form-phone');
@@ -667,7 +760,7 @@ window.addEventListener('DOMContentLoaded', function() {
         });
 
         const names = document.querySelectorAll('.form-name');
-        //console.log(names);
+        console.log(names);
 
         names.forEach((e) => {
             e.addEventListener('input', () => {
@@ -681,17 +774,37 @@ window.addEventListener('DOMContentLoaded', function() {
             });
 
         });
-        const messForm3 = document.querySelector('.mess');
 
-        messForm3.addEventListener('input', () => {
-            messForm3.setAttribute('pattern', '^[А-Яа-яЁё ]+$');
-            if (!messForm3.value) {
-                messForm3.setAttribute('placeholder', 'Ваше сообщение (кириллица и пробелы)');
+        const messForm2 = document.querySelector('.mess');
+
+        messForm2.addEventListener('input', () => {
+            messForm2.setAttribute('pattern', '^[А-Яа-яЁё ]+$');
+            if (!messForm2.value) {
+                messForm2.setAttribute('placeholder', 'Ваше сообщение (кириллица и пробелы)');
             } else {
-                messForm3.setAttribute('placeholder', 'Ваше сообщение');
+                messForm2.setAttribute('placeholder', 'Ваше сообщение');
             };
-        })
+        });
+
+        const form2Name = document.getElementById('form2-name');
+
+        // console.log(form2Name);
+
+        form2Name.addEventListener('input', () => {
+            form2Name.setAttribute('pattern', '^[А-Яа-яЁё ]+$');
+            if (!form2Name.value) {
+                form2Name.setAttribute('placeholder', 'Ваше имя (RU/space)');
+            } else {
+                form2Name.setAttribute('placeholder', 'Ваше имя');
+            };
+        });
+
+
+
+
     };
     formValid();
+
+
 
 });
