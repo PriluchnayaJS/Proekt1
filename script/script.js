@@ -70,7 +70,7 @@ window.addEventListener('DOMContentLoaded', function() {
         updateClock();
     };
     // countTimer('08 november 2020');
-    setInterval(countTimer, 1000, '17 november 2020');
+    setInterval(countTimer, 1000, '20 november 2020');
 
     //работа с меню
     const toggleMenu = () => {
@@ -430,7 +430,7 @@ window.addEventListener('DOMContentLoaded', function() {
     calc(100);
 
 
-    //sends-ajax-forms!
+    //sends-ajax-forms-promise!
     const sendForm = () => {
 
         const form = document.querySelectorAll('form');
@@ -469,13 +469,13 @@ window.addEventListener('DOMContentLoaded', function() {
 
                 //console.log(body);
                 //передача данных при вызове функции
-                postData(body,
-                    () => {
+                postData(body)
+                    .then(() => {
                         elem.reset();
                         statusMessage.textContent = successMessage;
                         setTimeout(() => statusMessage.remove(), 7000);
-                    },
-                    (error) => {
+                    })
+                    .catch(error => {
                         statusMessage.textContent = errorMessage;
                         console.error(error);
                     });
@@ -486,40 +486,138 @@ window.addEventListener('DOMContentLoaded', function() {
 
         //запрос на сервер в отдельной функции postData()
         //outputData -callback функция - данные, которые вернулись, обрабатываются
-        const postData = (body, outputData, errorData) => {
+        const postData = (body) => {
 
-            const request = new XMLHttpRequest();
+            return new Promise((resolve, reject) => {
+                const request = new XMLHttpRequest();
 
-            request.addEventListener('readystatechange', () => {
-                // statusMessage.textContent = loadMessage;
+                request.addEventListener('readystatechange', () => {
+                    // statusMessage.textContent = loadMessage;
 
-                if (request.readyState !== 4) {
-                    return;
-                };
+                    if (request.readyState !== 4) {
+                        return;
+                    };
 
-                if (request.status === 200) {
-                    outputData();
-                    // statusMessage.textContent = successMessage;
-                } else {
-                    errorData(request.status);
-                    // statusMessage.textContent = errorMessage;
-                    // console.error(request.status);
-                };
+                    if (request.status === 200) {
+                        resolve();
+                        // statusMessage.textContent = successMessage;
+                    } else {
+                        reject(request.status);
+                        // statusMessage.textContent = errorMessage;
+                        // console.error(request.status);
+                    };
+
+                });
+
+                request.open('POST', './server.php');
+                //request.setRequestHeader('Content-Type', 'multipart/form-data');
+                request.setRequestHeader('Content-Type', 'application/json');
+
+                //request.send(formData);
+                request.send(JSON.stringify(body));
 
             });
-
-            request.open('POST', './server.php');
-            //request.setRequestHeader('Content-Type', 'multipart/form-data');
-            request.setRequestHeader('Content-Type', 'application/json');
-
-            //request.send(formData);
-            request.send(JSON.stringify(body));
 
         };
 
     };
 
     sendForm();
+
+
+
+
+
+    //sends-ajax-forms!
+    // const sendForm = () => {
+
+    //     const form = document.querySelectorAll('form');
+
+    //     // console.log(form);
+
+    //     // const form = document.getElementById('form1');
+
+    //     //statusMessage.textContent = 'Тут будет сообщение!'
+
+    //     form.forEach((elem) => {
+    //         const errorMessage = 'Что-то пошло не так...',
+    //             loadMessage = 'Загрузка...',
+    //             successMessage = 'Спасибо! Мы скоро с Вами свяжемся!';
+
+    //         elem.addEventListener('submit', (event) => {
+    //             const statusMessage = document.createElement('div');
+    //             statusMessage.style.cssText = 'font-size: 2rem; color: #fff;';
+
+
+    //             event.preventDefault();
+    //             elem.appendChild(statusMessage);
+    //             statusMessage.textContent = loadMessage;
+    //             //получение данных с формы в обработчике событий
+    //             const formData = new FormData(elem);
+    //             let body = {};
+    //             // for (let val of formData.entries()) {
+    //             //     // console.log(val);
+    //             //     body[val[0]] = val[1];
+    //             // };
+    //             formData.forEach((val, key) => {
+    //                 body[key] = val;
+    //             });
+
+
+
+    //             //console.log(body);
+    //             //передача данных при вызове функции
+    //             postData(body,
+    //                 () => {
+    //                     elem.reset();
+    //                     statusMessage.textContent = successMessage;
+    //                     setTimeout(() => statusMessage.remove(), 7000);
+    //                 },
+    //                 (error) => {
+    //                     statusMessage.textContent = errorMessage;
+    //                     console.error(error);
+    //                 });
+    //         });
+
+
+    //     });
+
+    //     //запрос на сервер в отдельной функции postData()
+    //     //outputData -callback функция - данные, которые вернулись, обрабатываются
+    //     const postData = (body, outputData, errorData) => {
+
+    //         const request = new XMLHttpRequest();
+
+    //         request.addEventListener('readystatechange', () => {
+    //             // statusMessage.textContent = loadMessage;
+
+    //             if (request.readyState !== 4) {
+    //                 return;
+    //             };
+
+    //             if (request.status === 200) {
+    //                 outputData();
+    //                 // statusMessage.textContent = successMessage;
+    //             } else {
+    //                 errorData(request.status);
+    //                 // statusMessage.textContent = errorMessage;
+    //                 // console.error(request.status);
+    //             };
+
+    //         });
+
+    //         request.open('POST', './server.php');
+    //         //request.setRequestHeader('Content-Type', 'multipart/form-data');
+    //         request.setRequestHeader('Content-Type', 'application/json');
+
+    //         //request.send(formData);
+    //         request.send(JSON.stringify(body));
+
+    //     };
+
+    // };
+
+    // sendForm();
 
 
     //send-ajax-form
@@ -740,6 +838,8 @@ window.addEventListener('DOMContentLoaded', function() {
     // sendForm3();
 
 
+
+
     const formValid = () => {
         //validator phone, name, message
 
@@ -799,12 +899,8 @@ window.addEventListener('DOMContentLoaded', function() {
             };
         });
 
-
-
-
     };
     formValid();
-
 
 
 });
