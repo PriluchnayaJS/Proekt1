@@ -22,8 +22,8 @@ const slider = () => {
         return dot;
     };
 
-    //ulDots.append(...getListContent());
-    ulDots.appendChild(...getListContent());
+    ulDots.append(...getListContent());
+    //ulDots.appendChild(...getListContent());
 
     const dot = document.querySelectorAll('.dot'); //определение переменной dot после создания dot
 
