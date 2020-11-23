@@ -15,7 +15,7 @@ const formValid = () => {
     });
 
     const names = document.querySelectorAll('.form-name');
-    console.log(names);
+    //console.log(names);
 
     names.forEach((e) => {
         e.addEventListener('input', () => {
@@ -30,12 +30,29 @@ const formValid = () => {
 
     });
 
+    const emailes = document.querySelectorAll('.form-email');
+    console.log(emailes);
+
+    emailes.forEach((e) => {
+        e.addEventListener('input', () => {
+
+            e.setAttribute('pattern', '[a-zA-Z]+@[a-zA-Z_]+?[.]+[a-zA-Z]{2,6}');
+            if (!e.value) {
+                e.setAttribute('placeholder', 'E-mail (пример: email@mail.ru)');
+            } else {
+                e.setAttribute('placeholder', 'E-mail');
+            };
+        });
+
+    });
+
+
     const messForm2 = document.querySelector('.mess');
 
     messForm2.addEventListener('input', () => {
-        messForm2.setAttribute('pattern', '^[А-Яа-яЁё ]+$');
+        messForm2.setAttribute('pattern', '^[А-Яа-яЁё -.?!)(,:;]+$');
         if (!messForm2.value) {
-            messForm2.setAttribute('placeholder', 'Ваше сообщение (кириллица и пробелы)');
+            messForm2.setAttribute('placeholder', 'Ваше сообщение (кириллица, пробелы, знаки препинания)');
         } else {
             messForm2.setAttribute('placeholder', 'Ваше сообщение');
         };

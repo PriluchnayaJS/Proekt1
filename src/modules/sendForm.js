@@ -26,11 +26,11 @@ const sendForm = () => {
                     console.log(response);
                     elem.reset();
                     statusMessage.textContent = successMessage;
-                    setTimeout(() => statusMessage.remove(), 5000);
+                    setTimeout(() => statusMessage.remove(), 3000);
                 })
                 .catch((error) => {
                     statusMessage.textContent = errorMessage;
-                    setTimeout(() => statusMessage.remove(), 4000);
+                    setTimeout(() => statusMessage.remove(), 3000);
 
                     console.error(error);
                 });
