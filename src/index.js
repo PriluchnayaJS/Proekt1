@@ -19,7 +19,7 @@ import sendForm from './modules/sendForm';
 import formValid from './modules/formValid';
 
 //Timer
-setInterval(countTimer, 0, '24 november 2020');
+setInterval(countTimer, 0, '28 november 2020');
 //работа с меню
 toggleMenu();
 //popup окно

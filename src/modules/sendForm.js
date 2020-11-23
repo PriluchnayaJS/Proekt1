@@ -11,7 +11,6 @@ const sendForm = () => {
             const statusMessage = document.createElement('div');
             statusMessage.style.cssText = 'font-size: 2rem; color: #fff;';
 
-
             event.preventDefault();
             elem.appendChild(statusMessage);
             statusMessage.textContent = loadMessage;
@@ -27,10 +26,12 @@ const sendForm = () => {
                     console.log(response);
                     elem.reset();
                     statusMessage.textContent = successMessage;
-                    setTimeout(() => statusMessage.remove(), 7000);
+                    setTimeout(() => statusMessage.remove(), 5000);
                 })
                 .catch((error) => {
                     statusMessage.textContent = errorMessage;
+                    setTimeout(() => statusMessage.remove(), 4000);
+
                     console.error(error);
                 });
         });
